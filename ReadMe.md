@@ -129,50 +129,6 @@ Edit `REQUIRED_TAGS` and `VALID_ENVIRONMENT_VALUES` in the notebook to customize
 }
 ```
 
-## Workflow
-
-```
-┌─────────────────┐
-│  (Optional)     │
-│  Lab Setup      │──┐
-│  Create test    │  │
-│  snapshots      │  │
-└─────────────────┘  │
-                     ▼
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Setup AWS      │────▶│  Create Config  │────▶│  Find untagged  │
-│  Config         │     │  rule           │     │  snapshots      │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-        │                                               │
-        │  - Create IAM role                            │
-        │  - Create S3 bucket                           ▼
-        │  - Start recorder                     ┌─────────────────┐
-        │                                       │  Bulk tag       │
-        │                                       │  snapshots      │
-        │                                       └─────────────────┘
-        │                                               │
-        │                                               ▼
-        │                                       ┌─────────────────┐
-        │                                       │  Verify         │
-        │                                       │  compliance     │
-        │                                       └─────────────────┘
-        │                                               │
-        ▼                                               ▼
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Done! No more  │◀────│  Attach SCP     │◀────│ ⚠️ CRITICAL:    │
-│  untagged snaps │     │  to OUs         │     │ Identify all    │
-└─────────────────┘     └─────────────────┘     │ snapshot        │
-        │                       │               │ workflows       │
-        │                       │               └─────────────────┘
-        ▼                       │  
-┌─────────────────┐             │  - Verify mgmt account
-│  (Optional)     │             │  - List OUs
-│  Lab Cleanup    │             │  - Create SCP
-│  Delete test    │             │  - Attach to OUs
-│  snapshots      │
-└─────────────────┘
-```
-
 ## The SCP
 
 Once everything is tagged, this SCP blocks untagged snapshot creation:
