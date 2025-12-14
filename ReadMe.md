@@ -68,9 +68,13 @@ Edit `REQUIRED_TAGS` and `VALID_ENVIRONMENT_VALUES` in the notebook to customize
             "Action": [
                 "config:DescribeConfigurationRecorderStatus",
                 "config:DescribeConfigurationRecorders",
+                "config:DescribeDeliveryChannels",
                 "config:PutConfigurationRecorder",
                 "config:PutDeliveryChannel",
                 "config:StartConfigurationRecorder",
+                "config:StopConfigurationRecorder",
+                "config:DeleteConfigurationRecorder",
+                "config:DeleteDeliveryChannel",
                 "config:PutConfigRule",
                 "config:StartConfigRulesEvaluation",
                 "config:GetComplianceDetailsByConfigRule",
@@ -96,20 +100,44 @@ Edit `REQUIRED_TAGS` and `VALID_ENVIRONMENT_VALUES` in the notebook to customize
         {
             "Sid": "CloudTrailPermissions",
             "Effect": "Allow",
-            "Action": ["cloudtrail:LookupEvents"],
+            "Action": [
+                "cloudtrail:LookupEvents"
+            ],
             "Resource": "*"
         },
         {
             "Sid": "IAMPermissions",
             "Effect": "Allow",
-            "Action": ["iam:GetRole", "iam:CreateRole", "iam:AttachRolePolicy", "iam:PassRole"],
-            "Resource": ["arn:aws:iam::*:role/AWSConfigRole"]
+            "Action": [
+                "iam:GetRole",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:ListAttachedRolePolicies",
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/AWSConfigRole"
+            ]
         },
         {
             "Sid": "S3Permissions",
             "Effect": "Allow",
-            "Action": ["s3:CreateBucket", "s3:PutBucketPolicy", "s3:HeadBucket"],
-            "Resource": ["arn:aws:s3:::aws-config-bucket-*"]
+            "Action": [
+                "s3:CreateBucket",
+                "s3:PutBucketPolicy",
+                "s3:HeadBucket",
+                "s3:ListBucket",
+                "s3:DeleteBucket",
+                "s3:DeleteObject",
+                "s3:ListBucketVersions",
+                "s3:DeleteObjectVersion"
+            ],
+            "Resource": [
+                "arn:aws:s3:::aws-config-bucket-*",
+                "arn:aws:s3:::aws-config-bucket-*/*"
+            ]
         },
         {
             "Sid": "OrganizationsPermissions",
