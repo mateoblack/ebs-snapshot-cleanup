@@ -237,3 +237,36 @@ Want to enforce tags on other resources? Change the scope:
 ## License
 
 Do whatever you want with it.
+
+---
+
+## Summary of What This Runbook Does
+
+### Problem → Solution
+
+| Problem | Solution |
+|---------|----------|
+| Snapshots without tags | AWS Config rule finds them |
+| Can't track costs | Required `CostCenter` tag |
+| Unknown environments | Required `Environment` tag with validated values |
+| People keep creating untagged snapshots | SCP blocks creation without tags |
+
+### What Gets Created
+
+| Resource | Name |
+|----------|------|
+| IAM Role | `AWSConfigRole` |
+| S3 Bucket | `aws-config-bucket-{account}-{region}` |
+| Config Recorder | `default` |
+| Config Rule | `ebs-snapshot-required-tags` |
+| SCP | `RequireEBSSnapshotTags` |
+
+### Services Used
+
+AWS Config → S3 → IAM → CloudTrail → Organizations (SCPs)
+
+### Full Cleanup Included
+
+Everything created can be deleted with the included `full_lab_cleanup()` function.
+
+---
