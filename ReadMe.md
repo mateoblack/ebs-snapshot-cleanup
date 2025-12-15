@@ -161,7 +161,9 @@ Edit `REQUIRED_TAGS` and `VALID_ENVIRONMENT_VALUES` in the notebook to customize
 
 ## The SCP
 
-Once everything is tagged, this SCP blocks untagged snapshot creation:
+Once everything is tagged, this SCP blocks untagged snapshot creation.
+
+**⚠️ CRITICAL:** Each required tag needs its own deny statement. Multiple keys in the same `Null` condition are ANDed together, meaning the policy would only deny when ALL tags are missing simultaneously. To enforce that each individual tag is present, use separate statements:
 
 ```json
 {
@@ -170,12 +172,26 @@ Once everything is tagged, this SCP blocks untagged snapshot creation:
     "Resource": "arn:aws:ec2:*::snapshot/*",
     "Condition": {
         "Null": {
-            "aws:RequestTag/Environment": "true",
+            "aws:RequestTag/Environment": "true"
+        }
+    }
+},
+{
+    "Effect": "Deny",
+    "Action": ["ec2:CreateSnapshot", "ec2:CreateSnapshots"],
+    "Resource": "arn:aws:ec2:*::snapshot/*",
+    "Condition": {
+        "Null": {
             "aws:RequestTag/CostCenter": "true"
         }
     }
 }
 ```
+
+This ensures:
+- First statement denies if `Environment` tag is missing
+- Second statement denies if `CostCenter` tag is missing  
+- BOTH tags must be present for the request to succeed
 
 And enforces valid Environment values:
 
