@@ -236,20 +236,6 @@ When the SCP is enabled, ANY workflow that creates snapshots without tags will f
 - Creating an SCP doesn't enforce it - you must **attach** it to OUs
 - **Rollback:** SCP detachment and deletion functions are included in Cleanup section
 
-## Extending This
-
-Want to enforce tags on other resources? Change the scope:
-
-```python
-# In the Config rule
-'ComplianceResourceTypes': [
-    'AWS::EC2::Snapshot',
-    'AWS::EC2::Instance',
-    'AWS::EC2::Volume',
-    'AWS::S3::Bucket'
-]
-```
-
 ## License
 
 Do whatever you want with it.
@@ -283,6 +269,6 @@ AWS Config → S3 → IAM → CloudTrail → Organizations (SCPs)
 
 ### Full Cleanup Included
 
-Everything created can be deleted with the included `full_lab_cleanup()` function.
+Everything created can be deleted
 
 ---
